@@ -11,7 +11,7 @@ public class CandleWorld implements IWorld {
     private Candlewick candlewick;
     private ForceSource externalForce;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 10;
+    private final int maxP = 100;
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
@@ -58,6 +58,7 @@ public class CandleWorld implements IWorld {
     public void draw(Graphics2D graphics, ScreenConverter sc) {
         for (FireParticle p:particleList
              ) {
+            graphics.setColor(new Color(226,88,34));
             graphics.drawRect(sc.r2s(p.getPosition()).getI(),sc.r2s(p.getPosition()).getJ(),1,1);
         }
     }

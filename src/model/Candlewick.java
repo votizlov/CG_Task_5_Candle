@@ -14,7 +14,7 @@ public class Candlewick {
     }
     public LinkedList<FireParticle> emitParticles(){
         LinkedList<FireParticle> linkedList = new LinkedList<>();
-        for (double i = 0; i < size.getY(); i+=0.01) {
+        for (double i = 5; i < size.getY()+5; i+=0.01) {
             linkedList.add(new FireParticle(new Vector2(i,5),new Vector2(0,1),new Vector2(0,0)));
         }
         return linkedList;
