@@ -17,10 +17,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-/**
- *
- * @author Alexey
- */
 public class DrawPanel extends JPanel implements ActionListener,
         MouseListener, MouseMotionListener, MouseWheelListener {
     private ScreenConverter sc;

@@ -6,6 +6,7 @@ import utils2d.ScreenConverter;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class CandleWorld implements IWorld {
     private Candlewick candlewick;
@@ -16,12 +17,13 @@ public class CandleWorld implements IWorld {
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
         externalForce = new ForceSource(r.getCenter());
-        candlewick = new Candlewick(r.getCenter(), new Vector2(0.01, 0.05));
+        candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.05));
     }
 
     @Override
     public void update(double dt) {
-        if (particleList.size() > maxP) //remove exeeding particles
+        Random r = new Random();
+        if (particleList.size()*r.nextDouble() > maxP) //remove exeeding particles
             for (int i = 0; i < particleList.size() - maxP; i++)
                 particleList.removeLast();
         for (FireParticle p : particleList//calc existing
@@ -41,25 +43,31 @@ public class CandleWorld implements IWorld {
                 np = p.getPosition();
 
             Vector2 Fvn = externalForce.getForceAt(np);
+            //Vector2 Ftr = p.getVelocity().normolized().mul(-f.getMu() * p.getM() * f.getG());
+            //Vector2 F = Ftr.add(Fvn);
+
+            p.setAcceleration(Fvn);
             p.setVelocity(nv);
             p.setPosition(np);
         }
-        for (FireParticle p:candlewick.emitParticles()
-             ) {
+        for (FireParticle p : candlewick.emitParticles()
+        ) {
             particleList.addFirst(p);
         }
     }
 
     @Override
     public ForceSource getExternalForce() {
-        return null;
+        return externalForce;
     }
 
     public void draw(Graphics2D graphics, ScreenConverter sc) {
-        for (FireParticle p:particleList
-             ) {
-            graphics.setColor(new Color(226,88,34));
-            graphics.drawRect(sc.r2s(p.getPosition()).getI(),sc.r2s(p.getPosition()).getJ(),1,1);
+        for (FireParticle p : particleList
+        ) {
+            Random r = new Random();
+            double k = r.nextDouble();
+            graphics.setColor(new Color((int)(226*k),(int)(88*k), (int)(34*k)));
+            graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
         }
     }
 }
