@@ -54,7 +54,7 @@ public class CandlePanel extends JPanel implements ActionListener,
     @Override
     public void actionPerformed(ActionEvent e) {
         long time = System.currentTimeMillis();
-        w.update((time - last) * 0.001);
+        w.update((time - last) * 0.001);//*0.001
         last = time;
         repaint();
     }

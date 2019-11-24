@@ -4,11 +4,10 @@
  */
 package math;
 
-/**
- *
- * Описывает координаты реальной точки.
- * @author Alexey
- */
+
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 public class Vector2 {
     private double x, y;
 
@@ -65,6 +64,10 @@ public class Vector2 {
      * @return Вычесленное значение
      */
     public double length() {
-        return Math.sqrt(x*x + y*y);
+        return sqrt(x*x + y*y);
+    }
+
+    public double getLengthBetweenPoints(Vector2 secondP){
+        return sqrt(pow((secondP.getX()-x),2) + pow((secondP.getY()-y),2));
     }
 }

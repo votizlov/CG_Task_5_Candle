@@ -11,13 +11,15 @@ import java.util.Random;
 public class CandleWorld implements IWorld {
     private Candlewick candlewick;
     private ForceSource externalForce;
+    private ForceSource flameSource;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 100;
+    private final int maxP = 200;
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
         externalForce = new ForceSource(r.getCenter());
         candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.05));
+        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(),candlewick.getPos().getY()+50));
     }
 
     @Override
@@ -43,6 +45,7 @@ public class CandleWorld implements IWorld {
                 np = p.getPosition();
 
             Vector2 Fvn = externalForce.getForceAt(np);
+            //Vector2 F
             //Vector2 Ftr = p.getVelocity().normolized().mul(-f.getMu() * p.getM() * f.getG());
             //Vector2 F = Ftr.add(Fvn);
 
@@ -65,7 +68,10 @@ public class CandleWorld implements IWorld {
         for (FireParticle p : particleList
         ) {
             Random r = new Random();
-            double k = r.nextDouble();
+            double l = candlewick.getPos().getLengthBetweenPoints(p.getPosition());
+            double k = l/0.4*r.nextDouble();
+            if(k>1)
+                k = 1;
             graphics.setColor(new Color((int)(226*k),(int)(88*k), (int)(34*k)));
             graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
         }

@@ -6,11 +6,7 @@ package model;
 
 import math.Vector2;
 
-/**
- *
- * Класс, описывающий источник внешнего воздействия.
- * @author Alexey
- */
+
 public class ForceSource {
     private Vector2 location;
     private double value;
