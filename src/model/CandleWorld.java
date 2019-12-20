@@ -13,13 +13,14 @@ public class CandleWorld implements IWorld {
     private ForceSource externalForce;
     private ForceSource flameSource;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 200;
+    private final int maxP = 220;
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
         externalForce = new ForceSource(r.getCenter());
-        candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.05));
-        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(),candlewick.getPos().getY()+50));
+        candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.1));
+        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(),candlewick.getPos().getY()+1));
+        flameSource.setValue(10);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CandleWorld implements IWorld {
             if (reset)
                 np = p.getPosition();
 
-            Vector2 Fvn = externalForce.getForceAt(np);
+            Vector2 Fvn = externalForce.getForceAt(np).add(flameSource.getForceAt(np));
             //Vector2 F
             //Vector2 Ftr = p.getVelocity().normolized().mul(-f.getMu() * p.getM() * f.getG());
             //Vector2 F = Ftr.add(Fvn);
