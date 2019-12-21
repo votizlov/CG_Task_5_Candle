@@ -15,13 +15,13 @@ public class CandleWorld implements IWorld {
     private ForceSource externalForce;
     private ForceSource flameSource;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 600;
+    private final int maxP = 650;//600
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
         externalForce = new ForceSource(r.getCenter());
         candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.1));
-        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(),candlewick.getPos().getY()+1));
+        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(), candlewick.getPos().getY() + 1));
         flameSource.setValue(10);
     }
 
@@ -30,8 +30,8 @@ public class CandleWorld implements IWorld {
         Random r = new Random();
         flameSource.setLocation(
                 new Vector2(
-                candlewick.getPos().getX()+externalForce.getLocation().getX(),
-                candlewick.getPos().getY()+1+externalForce.getLocation().getY()));
+                        candlewick.getPos().getX(),//+externalForce.getLocation().getX(),
+                        candlewick.getPos().getY() + 1));//+externalForce.getLocation().getY()));
         if (particleList.size() > maxP) //remove exeeding particles
             for (int i = 0; i < particleList.size() - maxP; i++)
                 particleList.removeLast();
@@ -75,14 +75,31 @@ public class CandleWorld implements IWorld {
         for (FireParticle p : particleList
         ) {
             Random r = new Random();
-            int red = 2;
-            int i = 2;
-            //int green =
+            int red = 255;
+            int green = 165;
+            int blue = 0;
+            int i = 1;
+            double i1 = 0.6;
+            Color center = Color.WHITE;
             double l = candlewick.getPos().getLengthBetweenPoints(p.getPosition());
-            double k = sqrt(l/i*r.nextDouble());
-            if(k>1)
-                k = 1;
-            graphics.setColor(new Color((int)(255*k),(int)(165*k), (int)(0*k)));
+            double k = sqrt(l / i * r.nextDouble());
+            red *= k;
+            green *= k;
+            blue *= k;
+            double l2 = candlewick.getPos().add(new Vector2(0, 1.1)).getLengthBetweenPoints(p.getPosition());
+            if (l2 < i1) {
+                double k2 = 0.2/sqrt(l2 / i1 );//* r.nextDouble());
+                red += center.getRed() * k2;
+                green += center.getGreen() * k2;
+                blue += center.getBlue() * k2;
+            }
+            if (red > 255)
+                red = 255;
+            if (green > 255)
+                green = 255;
+            if (blue > 255)
+                blue = 255;
+            graphics.setColor(new Color(red, green, blue));
             graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
         }
     }
