@@ -8,12 +8,14 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static java.lang.Math.sqrt;
+
 public class CandleWorld implements IWorld {
     private Candlewick candlewick;
     private ForceSource externalForce;
     private ForceSource flameSource;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 220;
+    private final int maxP = 600;
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
@@ -26,7 +28,11 @@ public class CandleWorld implements IWorld {
     @Override
     public void update(double dt) {
         Random r = new Random();
-        if (particleList.size()*r.nextDouble() > maxP) //remove exeeding particles
+        flameSource.setLocation(
+                new Vector2(
+                candlewick.getPos().getX()+externalForce.getLocation().getX(),
+                candlewick.getPos().getY()+1+externalForce.getLocation().getY()));
+        if (particleList.size() > maxP) //remove exeeding particles
             for (int i = 0; i < particleList.size() - maxP; i++)
                 particleList.removeLast();
         for (FireParticle p : particleList//calc existing
@@ -69,11 +75,14 @@ public class CandleWorld implements IWorld {
         for (FireParticle p : particleList
         ) {
             Random r = new Random();
+            int red = 2;
+            int i = 2;
+            //int green =
             double l = candlewick.getPos().getLengthBetweenPoints(p.getPosition());
-            double k = l/0.4*r.nextDouble();
+            double k = sqrt(l/i*r.nextDouble());
             if(k>1)
                 k = 1;
-            graphics.setColor(new Color((int)(226*k),(int)(88*k), (int)(34*k)));
+            graphics.setColor(new Color((int)(255*k),(int)(165*k), (int)(0*k)));
             graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
         }
     }

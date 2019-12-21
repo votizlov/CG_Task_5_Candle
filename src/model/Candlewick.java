@@ -4,6 +4,8 @@ import math.Vector2;
 
 import java.util.LinkedList;
 
+import static java.lang.Math.*;
+
 public class Candlewick {
     public Vector2 getPos() {
         return pos;
@@ -19,10 +21,14 @@ public class Candlewick {
     public LinkedList<FireParticle> emitParticles(){
         LinkedList<FireParticle> linkedList = new LinkedList<>();
         for (double i = 0; i < size.getX(); i+=0.01) {
-            linkedList.add(new FireParticle(new Vector2(pos.getX()-size.getX()+i,5),new Vector2(1,1),new Vector2(-0.1,0)));
+            linkedList.add(new FireParticle(new Vector2(pos.getX()-size.getX()+i,5+i),new Vector2(1,1),new Vector2(-0.1,0)));
         }
         for (double i = 0; i < size.getX(); i+=0.01) {
-            linkedList.add(new FireParticle(new Vector2(pos.getX()-size.getX()+i,5),new Vector2(-1,1),new Vector2(0.1,0)));
+            linkedList.add(new FireParticle(new Vector2(pos.getX()-size.getX()+i,5+i),new Vector2(-1,1),new Vector2(0.1,0)));
+        }
+        for (double i = 0; i<size.getY(); i+=0.01){
+            linkedList.add(new FireParticle(new Vector2(pos.getX(),pos.getY() + size.getY()+i*10),new Vector2(1,1),new Vector2(-0.1,0)));
+            linkedList.add(new FireParticle(new Vector2(pos.getX(),pos.getY() + size.getY() + i*10),new Vector2(-1,1),new Vector2(0.1,0)));
         }
         return linkedList;
     }
