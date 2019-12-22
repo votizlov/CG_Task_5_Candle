@@ -21,6 +21,11 @@ public class Vector2 {
         this.y = y;
     }
 
+    public Vector2(Vector2 pos, Vector2 location) {
+        this.x = location.x-pos.x;
+        this.y = location.y-pos.y;
+    }
+
     public double getX() {
         return x;
     }

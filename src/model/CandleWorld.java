@@ -12,16 +12,17 @@ import static java.lang.Math.sqrt;
 
 public class CandleWorld implements IWorld {
     private Candlewick candlewick;
+    private Physical wickTip;
     private ForceSource externalForce;
     private ForceSource flameSource;
     private LinkedList<FireParticle> particleList = new LinkedList<>();
-    private final int maxP = 650;//600
+    private final int maxP = 2100;//650
 
     public CandleWorld(Rectangle r) {
         particleList = new LinkedList<>();
         externalForce = new ForceSource(r.getCenter());
         candlewick = new Candlewick(r.getCenter(), new Vector2(0.1, 0.1));
-        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(), candlewick.getPos().getY() + 1));
+        flameSource = new ForceSource(new Vector2(candlewick.getPos().getX(), candlewick.getPos().getY() + 1.15));
         flameSource.setValue(10);
     }
 
@@ -29,9 +30,11 @@ public class CandleWorld implements IWorld {
     public void update(double dt) {
         Random r = new Random();
         flameSource.setLocation(
-                new Vector2(
-                        candlewick.getPos().getX(),//+externalForce.getLocation().getX(),
-                        candlewick.getPos().getY() + 1));//+externalForce.getLocation().getY()));
+                externalForce.getValue()!=0?new Vector2(candlewick.getPos(),externalForce.getLocation()).normolized().mul(candlewick.getSize().getY() / 2 + 1.15).add(candlewick.getPos())
+                        :candlewick.getPos().add(new Vector2(0,1.15)));
+        candlewick.setTipPos(flameSource.getLocation());
+        //candlewick.getPos().getX(),//+externalForce.getLocation().getX(),
+        //candlewick.getPos().getY() + 1.15));//+externalForce.getLocation().getY()));
         if (particleList.size() > maxP) //remove exeeding particles
             for (int i = 0; i < particleList.size() - maxP; i++)
                 particleList.removeLast();
@@ -88,7 +91,7 @@ public class CandleWorld implements IWorld {
             blue *= k;
             double l2 = candlewick.getPos().add(new Vector2(0, 1.1)).getLengthBetweenPoints(p.getPosition());
             if (l2 < i1) {
-                double k2 = 0.2/sqrt(l2 / i1 );//* r.nextDouble());
+                double k2 = 0.2 / sqrt(l2 / i1);//* r.nextDouble());
                 red += center.getRed() * k2;
                 green += center.getGreen() * k2;
                 blue += center.getBlue() * k2;
@@ -102,5 +105,7 @@ public class CandleWorld implements IWorld {
             graphics.setColor(new Color(red, green, blue));
             graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
         }
+        graphics.setColor(Color.CYAN);
+        graphics.drawRect(sc.r2s(flameSource.getLocation()).getI(), sc.r2s(flameSource.getLocation()).getJ(), 4, 4);
     }
 }
