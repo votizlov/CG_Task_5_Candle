@@ -35,7 +35,7 @@ public class DrawPanel extends JPanel implements ActionListener,
         this.addMouseMotionListener(this);
         this.addMouseWheelListener(this);
         
-        (uwt = new UpdateWorldTimer(w, 10)).start();
+        (uwt = new UpdateWorldTimer(w, 100)).start();
         drawTimer = new Timer(20, this);
         drawTimer.start();
     }

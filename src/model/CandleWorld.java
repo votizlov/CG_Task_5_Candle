@@ -75,6 +75,8 @@ public class CandleWorld implements IWorld {
     }
 
     public void draw(Graphics2D graphics, ScreenConverter sc) {
+        Color[] rgb = new Color[particleList.size()];
+        int j = 0;
         for (FireParticle p : particleList
         ) {
             Random r = new Random();
@@ -102,8 +104,24 @@ public class CandleWorld implements IWorld {
                 green = 255;
             if (blue > 255)
                 blue = 255;
-            graphics.setColor(new Color(red, green, blue));
-            graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
+            rgb[j] = new Color(red, green, blue);
+            j++;
+            //graphics.setColor(new Color(red, green, blue));
+            //graphics.drawRect(sc.r2s(p.getPosition()).getI(), sc.r2s(p.getPosition()).getJ(), 1, 1);
+        }
+        int[] triangleX = new int[3];
+        int[] triangleY = new int[3];
+        for(int i = 1;i<rgb.length-1;i+=2){
+            //for(int n = 0;n<3;n++){
+                triangleX[0] = sc.r2s(particleList.get(i-1).getPosition()).getI();
+                triangleY[0] =  sc.r2s(particleList.get(i-1).getPosition()).getJ();
+                triangleX[1] = sc.r2s(particleList.get(i).getPosition()).getI();
+                triangleY[1] =  sc.r2s(particleList.get(i).getPosition()).getJ();
+                triangleX[2] =  sc.r2s(particleList.get(i+1).getPosition()).getI();
+                triangleY[2] = sc.r2s(particleList.get(i+1).getPosition()).getJ();
+            //}
+            graphics.setColor(rgb[i]);
+            graphics.fillPolygon(triangleX,triangleY,3);
         }
         graphics.setColor(Color.CYAN);
         graphics.drawRect(sc.r2s(flameSource.getLocation()).getI(), sc.r2s(flameSource.getLocation()).getJ(), 4, 4);
